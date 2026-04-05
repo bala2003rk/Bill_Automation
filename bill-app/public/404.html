@@ -3,17 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>BillTrack</title>
-    <script>
-      // GitHub Pages SPA redirect trick
-      // Redirects 404s back to index.html preserving the path
-      var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 2).join('/') +
-        '/?p=' + l.pathname.slice(1).replace(/&/g, '~and~') +
-        (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
-    </script>
+    <meta http-equiv="refresh" content="0;url=/" />
   </head>
+  <body>Redirecting...</body>
 </html>
