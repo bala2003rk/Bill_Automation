@@ -1,0 +1,11 @@
+Use the filter buttons to jump between sections. Quick test checklist for your Postman/Thunder Client:
+Test order that catches the most issues fast:
+
+POST /api/auth/login → get token (Done)
+GET /api/auth/me → verify token works (Done)
+npm run seed → then login again to confirm Atlas has data (Pending)
+GET /api/dashboard/employee → confirms DB + role guard working (Done)
+POST /api/bills (multipart) → end-to-end bill submit
+POST /api/bills/:id/approve → triggers email
+POST /api/bills/:id/pay → full workflow done
+

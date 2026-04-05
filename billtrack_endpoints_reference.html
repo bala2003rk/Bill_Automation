@@ -1,0 +1,156 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.wrap{padding:16px 0}
+.section{margin-bottom:24px}
+.section-title{font-size:13px;font-weight:500;color:var(--color-text-secondary);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--color-border-tertiary)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-weight:500;font-size:11px;color:var(--color-text-secondary);padding:5px 8px;text-transform:uppercase;letter-spacing:.04em;background:var(--color-background-secondary);border-bottom:1px solid var(--color-border-tertiary)}
+td{padding:7px 8px;border-bottom:1px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--color-background-secondary)}
+.method{display:inline-block;font-size:10px;font-weight:500;padding:2px 6px;border-radius:4px;width:42px;text-align:center;font-family:var(--font-mono)}
+.GET{background:#e6f1fb;color:#0c447c}.POST{background:#eaf3de;color:#27500a}.PUT{background:#faeeda;color:#633806}.DELETE{background:#fcebeb;color:#791f1f}.PATCH{background:#fbeaf0;color:#72243e}
+@media(prefers-color-scheme:dark){.GET{background:#042c53;color:#b5d4f4}.POST{background:#173404;color:#c0dd97}.PUT{background:#412402;color:#fac775}.DELETE{background:#501313;color:#f7c1c1}.PATCH{background:#4b1528;color:#f4c0d1}}
+.endpoint{font-family:var(--font-mono);font-size:12px;color:var(--color-text-primary)}
+.desc{color:var(--color-text-secondary);font-size:12px;margin-top:2px}
+.roles{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}
+.role{font-size:10px;padding:1px 6px;border-radius:10px;font-weight:500}
+.r-all{background:#eeedfe;color:#3c3489}.r-admin{background:#fcebeb;color:#791f1f}.r-manager{background:#e6f1fb;color:#0c447c}.r-tl{background:#eaf3de;color:#27500a}.r-emp{background:#faeeda;color:#633806}.r-pay{background:#fbeaf0;color:#72243e}
+@media(prefers-color-scheme:dark){.r-all{background:#26215c;color:#ceccf6}.r-admin{background:#501313;color:#f7c1c1}.r-manager{background:#042c53;color:#b5d4f4}.r-tl{background:#173404;color:#c0dd97}.r-emp{background:#412402;color:#fac775}.r-pay{background:#4b1528;color:#f4c0d1}}
+.tag-backend{font-size:10px;padding:1px 6px;border-radius:10px;background:#f1efe8;color:#444441;font-weight:500}
+.tag-frontend{font-size:10px;padding:1px 6px;border-radius:10px;background:#e1f5ee;color:#085041;font-weight:500}
+@media(prefers-color-scheme:dark){.tag-backend{background:#2c2c2a;color:#d3d1c7}.tag-frontend{background:#04342c;color:#9fe1cb}}
+.check-wrap{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filter-btn{font-size:11px;padding:3px 10px;border-radius:12px;border:1px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer;transition:.15s}
+.filter-btn.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.status-ok{color:#198038;font-size:11px;font-weight:500}
+.status-todo{color:#b45309;font-size:11px;font-weight:500}
+</style>
+<div class="wrap">
+<div class="check-wrap">
+  <span style="font-size:12px;color:var(--color-text-secondary);align-self:center">Filter:</span>
+  <button class="filter-btn active" onclick="filter('all')">All</button>
+  <button class="filter-btn" onclick="filter('auth')">Auth</button>
+  <button class="filter-btn" onclick="filter('bills')">Bills</button>
+  <button class="filter-btn" onclick="filter('users')">Users</button>
+  <button class="filter-btn" onclick="filter('projects')">Projects</button>
+  <button class="filter-btn" onclick="filter('dashboard')">Dashboard</button>
+</div>
+
+<div class="section" data-group="auth">
+<div class="section-title">Auth — /api/auth</div>
+<table>
+<thead><tr><th style="width:50px">Method</th><th style="width:200px">Endpoint</th><th>Description</th><th style="width:180px">Who can call</th></tr></thead>
+<tbody>
+<tr><td><span class="method POST">POST</span></td><td><span class="endpoint">/auth/login</span></td><td>Login → <code>{token,user}</code><div class="desc">Body: {email, password}</div></td><td><div class="roles"><span class="role r-all">Everyone</span></div></td></tr>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/auth/me</span></td><td>Get current user profile<div class="desc">Returns user object (no password)</div></td><td><div class="roles"><span class="role r-all">All logged in</span></div></td></tr>
+<tr><td><span class="method PUT">PUT</span></td><td><span class="endpoint">/auth/me</span></td><td>Update profile<div class="desc">name, department, upiId, bankAccount, ifsc, bankName</div></td><td><div class="roles"><span class="role r-all">All logged in</span></div></td></tr>
+<tr><td><span class="method PUT">PUT</span></td><td><span class="endpoint">/auth/me/password</span></td><td>Change password<div class="desc">Body: {currentPassword, newPassword}</div></td><td><div class="roles"><span class="role r-all">All logged in</span></div></td></tr>
+<tr><td><span class="method POST">POST</span></td><td><span class="endpoint">/auth/me/qr-upload</span></td><td>Upload UPI QR code<div class="desc">Multipart form, field: file</div></td><td><div class="roles"><span class="role r-all">All logged in</span></div></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section" data-group="bills">
+<div class="section-title">Bills — /api/bills</div>
+<table>
+<thead><tr><th style="width:50px">Method</th><th style="width:200px">Endpoint</th><th>Description</th><th style="width:180px">Who can call</th></tr></thead>
+<tbody>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/bills</span></td><td>All bills (role-filtered)<div class="desc">ADMIN/PAYMENT_ADMIN: all · MANAGER/TL: own dept · EMPLOYEE: own only</div></td><td><div class="roles"><span class="role r-all">All roles</span></div></td></tr>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/bills/my</span></td><td>Current user's own bills<div class="desc">Query: ?status=PENDING|APPROVED|REJECTED|PAID</div></td><td><div class="roles"><span class="role r-all">All roles</span></div></td></tr>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/bills/stats</span></td><td>Status counts for current scope<div class="desc">Returns: {pending, approved, rejected, paid, total}</div></td><td><div class="roles"><span class="role r-all">All roles</span></div></td></tr>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/bills/:id</span></td><td>Single bill detail<div class="desc">Populates submittedBy, project, approvedBy, paidBy</div></td><td><div class="roles"><span class="role r-all">All roles</span></div></td></tr>
+<tr><td><span class="method POST">POST</span></td><td><span class="endpoint">/bills</span></td><td>Submit new bill<div class="desc">Multipart: title, type, amount, date, description, projectId, receipt (file)</div></td><td><div class="roles"><span class="role r-emp">EMPLOYEE</span><span class="role r-tl">TEAM_LEAD</span><span class="role r-all">all</span></div></td></tr>
+<tr><td><span class="method PUT">PUT</span></td><td><span class="endpoint">/bills/:id</span></td><td>Edit bill (PENDING only)<div class="desc">Only submitter or ADMIN</div></td><td><div class="roles"><span class="role r-emp">EMPLOYEE</span><span class="role r-admin">ADMIN</span></div></td></tr>
+<tr><td><span class="method POST">POST</span></td><td><span class="endpoint">/bills/:id/approve</span></td><td>Approve bill → emails employee + CC payment admin<div class="desc">Body: {note?} · Bill must be PENDING</div></td><td><div class="roles"><span class="role r-manager">MANAGER</span><span class="role r-tl">TEAM_LEAD</span><span class="role r-admin">ADMIN</span></div></td></tr>
+<tr><td><span class="method POST">POST</span></td><td><span class="endpoint">/bills/:id/reject</span></td><td>Reject bill → emails employee with reason<div class="desc">Body: {reason} required · Bill must be PENDING</div></td><td><div class="roles"><span class="role r-manager">MANAGER</span><span class="role r-tl">TEAM_LEAD</span><span class="role r-admin">ADMIN</span></div></td></tr>
+<tr><td><span class="method POST">POST</span></td><td><span class="endpoint">/bills/:id/pay</span></td><td>Mark bill paid → emails employee<div class="desc">Body: {txRef?} · Bill must be APPROVED</div></td><td><div class="roles"><span class="role r-pay">PAYMENT_ADMIN</span><span class="role r-admin">ADMIN</span></div></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section" data-group="users">
+<div class="section-title">Users — /api/users</div>
+<table>
+<thead><tr><th style="width:50px">Method</th><th style="width:200px">Endpoint</th><th>Description</th><th style="width:180px">Who can call</th></tr></thead>
+<tbody>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/users</span></td><td>List all users<div class="desc">Query: ?role=&department=&isActive=</div></td><td><div class="roles"><span class="role r-all">All logged in</span></div></td></tr>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/users/:id</span></td><td>Single user detail</td><td><div class="roles"><span class="role r-all">All logged in</span></div></td></tr>
+<tr><td><span class="method POST">POST</span></td><td><span class="endpoint">/users</span></td><td>Create user<div class="desc">Body: {name, email, password, role, department, employeeId, …}</div></td><td><div class="roles"><span class="role r-admin">ADMIN only</span></div></td></tr>
+<tr><td><span class="method PUT">PUT</span></td><td><span class="endpoint">/users/:id</span></td><td>Update user<div class="desc">name, role, department, isActive, bank details</div></td><td><div class="roles"><span class="role r-all">All logged in</span></div></td></tr>
+<tr><td><span class="method DELETE">DELETE</span></td><td><span class="endpoint">/users/:id</span></td><td>Soft delete (sets isActive=false)</td><td><div class="roles"><span class="role r-admin">ADMIN only</span></div></td></tr>
+<tr><td><span class="method PATCH">PATCH</span></td><td><span class="endpoint">/users/:id/toggle</span></td><td>Toggle active/inactive status</td><td><div class="roles"><span class="role r-admin">ADMIN only</span></div></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section" data-group="projects">
+<div class="section-title">Projects — /api/projects</div>
+<table>
+<thead><tr><th style="width:50px">Method</th><th style="width:200px">Endpoint</th><th>Description</th><th style="width:180px">Who can call</th></tr></thead>
+<tbody>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/projects</span></td><td>List projects<div class="desc">ADMIN/MANAGER: all · Others: only projects they're members of. Includes computed `spent`</div></td><td><div class="roles"><span class="role r-all">All roles</span></div></td></tr>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/projects/:id</span></td><td>Single project + members</td><td><div class="roles"><span class="role r-all">All roles</span></div></td></tr>
+<tr><td><span class="method POST">POST</span></td><td><span class="endpoint">/projects</span></td><td>Create project<div class="desc">Body: {name, clientName, location, status, budget, startDate, endDate}</div></td><td><div class="roles"><span class="role r-manager">MANAGER</span><span class="role r-admin">ADMIN</span></div></td></tr>
+<tr><td><span class="method PUT">PUT</span></td><td><span class="endpoint">/projects/:id</span></td><td>Update project details</td><td><div class="roles"><span class="role r-manager">MANAGER</span><span class="role r-admin">ADMIN</span></div></td></tr>
+<tr><td><span class="method POST">POST</span></td><td><span class="endpoint">/projects/:id/members</span></td><td>Assign member to project<div class="desc">Body: {userId}</div></td><td><div class="roles"><span class="role r-manager">MANAGER</span><span class="role r-admin">ADMIN</span></div></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section" data-group="projects">
+<div class="section-title">Departments — /api/departments</div>
+<table>
+<thead><tr><th style="width:50px">Method</th><th style="width:200px">Endpoint</th><th>Description</th><th style="width:180px">Who can call</th></tr></thead>
+<tbody>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/departments</span></td><td>List all departments</td><td><div class="roles"><span class="role r-all">All logged in</span></div></td></tr>
+<tr><td><span class="method POST">POST</span></td><td><span class="endpoint">/departments</span></td><td>Create department<div class="desc">Body: {name, manager, budget}</div></td><td><div class="roles"><span class="role r-admin">ADMIN only</span></div></td></tr>
+<tr><td><span class="method PUT">PUT</span></td><td><span class="endpoint">/departments/:id</span></td><td>Update department</td><td><div class="roles"><span class="role r-admin">ADMIN only</span></div></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section" data-group="dashboard">
+<div class="section-title">Dashboard — /api/dashboard</div>
+<table>
+<thead><tr><th style="width:50px">Method</th><th style="width:200px">Endpoint</th><th>Returns</th><th style="width:180px">Who can call</th></tr></thead>
+<tbody>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/dashboard/admin</span></td><td>totalBills, totalUsers, pending, totalPaid, deptData[], monthlyData[]</td><td><div class="roles"><span class="role r-admin">ADMIN</span></div></td></tr>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/dashboard/manager</span></td><td>teamBills, pendingCount, approvedCount, teamCount, totalAmount, monthlyData[]</td><td><div class="roles"><span class="role r-manager">MANAGER</span><span class="role r-admin">ADMIN</span></div></td></tr>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/dashboard/teamlead</span></td><td>teamBills, pendingCount, memberCount, monthlyData[]</td><td><div class="roles"><span class="role r-tl">TEAM_LEAD</span><span class="role r-manager">MANAGER</span><span class="role r-admin">ADMIN</span></div></td></tr>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/dashboard/employee</span></td><td>myBills, pendingCount, approvedCount, paidCount, totalApproved, recentBills[]</td><td><div class="roles"><span class="role r-emp">EMPLOYEE</span><span class="role r-tl">TEAM_LEAD</span><span class="role r-manager">MANAGER</span><span class="role r-admin">ADMIN</span></div></td></tr>
+<tr><td><span class="method GET">GET</span></td><td><span class="endpoint">/dashboard/payment</span></td><td>pendingPayments[], pendingCount, processedCount, totalPaid, monthlyData[]</td><td><div class="roles"><span class="role r-pay">PAYMENT_ADMIN</span><span class="role r-admin">ADMIN</span></div></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section" data-group="all">
+<div class="section-title">Frontend pages → backend calls</div>
+<table>
+<thead><tr><th>Page</th><th>Role</th><th>API calls made</th></tr></thead>
+<tbody>
+<tr><td>Login</td><td><span class="role r-all">All</span></td><td><code>POST /auth/login</code></td></tr>
+<tr><td>Admin Dashboard</td><td><span class="role r-admin">ADMIN</span></td><td><code>GET /dashboard/admin</code> · <code>GET /users</code> · <code>GET /projects</code> · <code>GET /bills</code></td></tr>
+<tr><td>Manager Dashboard</td><td><span class="role r-manager">MANAGER</span></td><td><code>GET /dashboard/manager</code> · <code>GET /bills</code> · <code>POST /bills/:id/approve</code> · <code>POST /bills/:id/reject</code></td></tr>
+<tr><td>Team Lead Dashboard</td><td><span class="role r-tl">TEAM_LEAD</span></td><td><code>GET /dashboard/teamlead</code> · <code>GET /bills</code></td></tr>
+<tr><td>Employee Dashboard</td><td><span class="role r-emp">EMPLOYEE</span></td><td><code>GET /dashboard/employee</code> · <code>GET /projects</code></td></tr>
+<tr><td>My Bills</td><td><span class="role r-emp">EMPLOYEE</span></td><td><code>GET /bills/my</code> · <code>POST /bills</code></td></tr>
+<tr><td>Payment Dashboard</td><td><span class="role r-pay">PAYMENT_ADMIN</span></td><td><code>GET /dashboard/payment</code> · <code>POST /bills/:id/pay</code></td></tr>
+<tr><td>Profile</td><td><span class="role r-all">All</span></td><td><code>GET /auth/me</code> · <code>PUT /auth/me</code> · <code>PUT /auth/me/password</code> · <code>POST /auth/me/qr-upload</code></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<script>
+function filter(g){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.section[data-group]').forEach(s=>{
+    s.style.display=(g==='all'||s.dataset.group===g||g==='all')?'':'none';
+  });
+  if(g==='all') document.querySelectorAll('.section[data-group]').forEach(s=>s.style.display='');
+}
+</script>

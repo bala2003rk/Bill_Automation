@@ -1,0 +1,61 @@
+I'm building a MERN stack Bill Reimbursement App called BillTrack. The React+Vite frontend and Node.js/Express/MongoDB backend are both complete. I need help debugging and extending.
+Tech Stack:
+
+Frontend: React + Vite @ http://localhost:5173
+Backend: Node.js + Express @ http://localhost:5000/api
+Database: MongoDB Atlas
+Auth: JWT + bcryptjs
+File uploads: Multer + Cloudinary (v1.41.3)
+Email: Nodemailer (Gmail SMTP)
+
+Roles: ADMIN, MANAGER, TEAM_LEAD, EMPLOYEE, PAYMENT_ADMIN
+Bill workflow: Employee/TL submits → Manager approves/rejects → Payment Admin marks paid. Email notifications at every step.
+Backend folder structure:
+backend/
+├── server.js
+├── .env
+├── config/db.js, cloudinary.js
+├── middleware/auth.js          ← JWT verify + roleGuard()
+├── models/User.js, Bill.js, Project.js, Department.js
+├── controllers/auth, bill, user, project, department, dashboard
+├── routes/auth, bills, users, projects, departments, dashboard
+├── services/emailService.js   ← 4 HTML email templates
+└── scripts/seed.js
+Key API endpoints:
+
+POST /api/auth/login → { token, user }
+GET /api/auth/me
+GET /api/bills (role-filtered)
+POST /api/bills (multipart with receipt)
+POST /api/bills/:id/approve|reject|pay
+GET /api/dashboard/admin|manager|teamlead|employee|payment
+Full CRUD: /api/users, /api/projects, /api/departments
+
+Demo credentials (password: demo123):
+
+admin@company.com → ADMIN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Y2I3OTdmODZjZGJhZjFkODNhNWEzZCIsImlhdCI6MTc3NDk0NzE1NCwiZXhwIjoxNzc1NTUxOTU0fQ.fNumK1BcZIC6s_e66X7MZE01sqAjpqoNWC6_Jc5Lf30
+manager@company.com → MANAGER
+tl@company.com → TEAM_LEAD
+emp@company.com → EMPLOYEE
+accounts@company.com → PAYMENT_ADMIN
+
+Current .env:
+PORT=5000
+MONGODB_URI=mongodb+srv://<user>:<pass>@<cluster>.mongodb.net/billtrack
+JWT_SECRET=billtrack_super_secret_jwt_key_change_in_production
+JWT_EXPIRES_IN=7d
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your@gmail.com
+SMTP_PASS=your_app_password
+FROM_EMAIL=BillTrack <noreply@billtrack.app>
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+CLIENT_URL=http://localhost:5173
+Known fixes already applied:
+
+cloudinary downgraded to ^1.41.3 to match multer-storage-cloudinary@4.0.0 peer dep
+MongoDB switched from local to Atlas
+
+Please help me continue debugging and building remaining features.
